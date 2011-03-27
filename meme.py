@@ -12,7 +12,7 @@ GENERATORS = {
   'BUTTHURT_DWELLER'  : ('AdviceDogSpinoff' , 1438    , 'Butthurt-Dweller'                      ,              ) ,
   'B_FROG'            : ('AdviceDogSpinoff' , 1211    , 'Foul-Bachelorette-Frog'                ,              ) ,
   'B_FROG2'           : ('AdviceDogSpinoff' , 1045    , 'Foul-Bachelor-Frog'                    ,              ) ,
-  'BUSICAT'           : ('AdviceDogSpinoff' , 332591  , 'BusinessCat'                           ,              ) ,
+  'BUSICAT'           : ('AdviceDogSpinoff' , 330000  , 'BusinessCat'                           ,              ) ,
   'COOL_STORY_HOUSE'  : ('AdviceDogSpinoff' , 16948   , 'cool-story-bro-house'                  ,              ) ,
   'CREEPER'           : ('AdviceDogSpinoff' , 173501  , 'Minecraft-Creeper'                     ,              ) ,
   'C_WOLF'            : ('AdviceDogSpinoff' , 931     , 'Courage-Wolf'                          ,              ) ,
@@ -57,7 +57,8 @@ def create_meme(data):
 def get_meme_url(meme):
     gen = GENERATORS.get(meme)
     if gen:
-        return 'http://images.memegenerator.net/%s/File/%d/%s.jpg' % (gen[2], gen[1], gen[2])
+        pq = PyQuery(url="http://memegenerator.net/%s" % gen[2])
+        return pq.find('a img.large').attr('src')
     else:
         return None
 
