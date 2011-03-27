@@ -12,6 +12,7 @@ GENERATORS = {
   'BUTTHURT_DWELLER'  : ('AdviceDogSpinoff' , 1438    , 'Butthurt-Dweller'                      ,              ) ,
   'B_FROG'            : ('AdviceDogSpinoff' , 1211    , 'Foul-Bachelorette-Frog'                ,              ) ,
   'B_FROG2'           : ('AdviceDogSpinoff' , 1045    , 'Foul-Bachelor-Frog'                    ,              ) ,
+  'BUSICAT'           : ('AdviceDogSpinoff' , 332591  , 'BusinessCat'                           ,              ) ,
   'COOL_STORY_HOUSE'  : ('AdviceDogSpinoff' , 16948   , 'cool-story-bro-house'                  ,              ) ,
   'CREEPER'           : ('AdviceDogSpinoff' , 173501  , 'Minecraft-Creeper'                     ,              ) ,
   'C_WOLF'            : ('AdviceDogSpinoff' , 931     , 'Courage-Wolf'                          ,              ) ,
