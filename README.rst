@@ -17,6 +17,9 @@ Options:
                         Prints the URL for the meme's base image. Does not
                         generate.
 
+ex.
+$ meme.py COOL_STORY_HOUSE "nice script"
+
 
 Future
 ======
