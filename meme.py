@@ -87,8 +87,8 @@ if __name__ == '__main__':
     from optparse import OptionParser
     parser = OptionParser(usage="usage: %prog <meme> <line1> [additional lines...]")
     parser.add_option('-l', '--list', action='store_true', dest='memelist', default=False, help='list all available memes')
-    parser.add_option('-s', '--search', help='list memes with name or option containing string')
-    parser.add_option('-p', '--preview_url', default=False, help="Prints the URL for the meme's base image. Does not generate.")
+    parser.add_option('-s', '--search', metavar='STRING', help='list memes with name or option containing string')
+    parser.add_option('-p', '--preview_url', default=False, metavar='MEME', help="Prints the URL for the meme's base image. Does not generate.")
     (options, args) = parser.parse_args()
 
     if len(args) == 0:
