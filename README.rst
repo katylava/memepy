@@ -11,9 +11,9 @@ Usage: meme.py <meme> <line1> [additional lines...]
 Options:
   -h, --help            show this help message and exit
   -l, --list            list all available memes
-  -s SEARCH, --search=SEARCH
+  -s STRING, --search=STRING
                         list memes with name or option containing string
-  -p PREVIEW_URL, --preview_url=PREVIEW_URL
+  -p MEME, --preview_url=MEME
                         Prints the URL for the meme's base image. Does not
                         generate.
 
