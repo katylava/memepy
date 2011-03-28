@@ -8,6 +8,7 @@ GENERATORS = {
   'A_DODSON'          : ('AdviceDogSpinoff' , 106375  , 'Antoine-Dodson'                        ,              ) ,
   'A_DOG'             : ('AdviceDogSpinoff' , 940     , 'Advice-Dog'                            ,              ) ,
   'A_FATHER'          : ('AdviceDogSpinoff' , 1436    , 'High-Expectations-Asian-Father'        ,              ) ,
+  'A_GOD'             : ('AdviceDogSpinoff' , 188834  , 'Advice-God'                            ,              ) ,
   'BEAR-GRYLLS'       : ('AdviceDogSpinoff' , 89714   , 'Bear-Grylls'                           ,              ) ,
   'BUTTHURT_DWELLER'  : ('AdviceDogSpinoff' , 1438    , 'Butthurt-Dweller'                      ,              ) ,
   'B_FROG'            : ('AdviceDogSpinoff' , 1211    , 'Foul-Bachelorette-Frog'                ,              ) ,
