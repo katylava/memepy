@@ -34,6 +34,8 @@ def pp_memes(memelist):
         keys = [t['title'] for t in memelist]
         keys.sort(cmp=lambda x,y: len(x)-len(y))
         maxlen = len(keys.pop())
+        print "%s  %s  Template" % ('Name'.ljust(maxlen), 'Score'.ljust(6))
+        print "%s  ------  --------" % ('-' * maxlen)
         for m in memelist:
             print '%s  %s  %s' % (m['title'].ljust(maxlen),
                                   m['score'].ljust(6),
@@ -46,7 +48,7 @@ def create_meme(title, args):
     pq = PyQuery(url=url)
     form = pq.find('div.instance_form_create_small form')
     if len(form) == 0:
-        print "Error: something changed or something weird happened."
+        return "Error: something changed or something weird happened."
     else:
         url = "%s%s" % (GENURL, form[0].attrib['action'])
         data = {
@@ -57,7 +59,7 @@ def create_meme(title, args):
             'text1': len(args) > 1 and args[1] or '',
         }
         postq = PyQuery(url=url, data=data, method='post')
-        print GENURL + postq.find('div.instance_large img')[0].attrib['src']
+        return GENURL + postq.find('div.instance_large img')[0].attrib['src']
 
 if __name__ == '__main__':
     from optparse import OptionParser
@@ -88,6 +90,6 @@ if __name__ == '__main__':
             meme = args.pop(0)
 
         if meme:
-            create_meme(meme, args)
+            print create_meme(meme, args)
         else:
             print "No memes found matching %s" % meme
