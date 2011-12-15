@@ -6,8 +6,8 @@ Place meme.py somewhere on your PATH. Requires PyQuery.
 Usage
 =====
 
-> Usage: `meme.py <meme> <line1> <line2>`
-> or: `meme.py -s <pattern> <line1> <line2>`
+    Usage: `meme.py <meme> <line1> <line2>`
+    or: `meme.py -s <pattern> <line1> <line2>`
 
 In the first form you must provide a valid meme name (which can be determined
 by running meme.py -l or meme.py -s <pattern> with no arguments).
