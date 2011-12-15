@@ -1,118 +1,93 @@
 #!/usr/bin/env python
 
 from pyquery import PyQuery
+from urllib import quote
 
-GENURL = 'http://memegenerator.net/Instance/CreateOrEdit'
-GENERATORS = {
-  'ANTEATER'          : ('AdviceDogSpinoff' , 41191   , 'anteater'                              ,              ) ,
-  'A_DODSON'          : ('AdviceDogSpinoff' , 106375  , 'Antoine-Dodson'                        ,              ) ,
-  'A_DOG'             : ('AdviceDogSpinoff' , 940     , 'Advice-Dog'                            ,              ) ,
-  'A_FATHER'          : ('AdviceDogSpinoff' , 1436    , 'High-Expectations-Asian-Father'        ,              ) ,
-  'A_GOD'             : ('AdviceDogSpinoff' , 188834  , 'Advice-God'                            ,              ) ,
-  'BEAR-GRYLLS'       : ('AdviceDogSpinoff' , 89714   , 'Bear-Grylls'                           ,              ) ,
-  'BUTTHURT_DWELLER'  : ('AdviceDogSpinoff' , 1438    , 'Butthurt-Dweller'                      ,              ) ,
-  'B_FROG'            : ('AdviceDogSpinoff' , 1211    , 'Foul-Bachelorette-Frog'                ,              ) ,
-  'B_FROG2'           : ('AdviceDogSpinoff' , 1045    , 'Foul-Bachelor-Frog'                    ,              ) ,
-  'BILL_PROVES_GOD'   : ('AdviceDogSpinoff' , 435227  , 'Bill-Oreilly-Proves-God'               ,              ) ,
-  'BILL_PROVES_GOD_2' : ('AdviceDogSpinoff' , 445648  , 'Bill-Oreilly-Proves-God'               ,              ) ,
-  'BUSICAT'           : ('AdviceDogSpinoff' , 330000  , 'BusinessCat'                           ,              ) ,
-  'COOL_STORY_HOUSE'  : ('AdviceDogSpinoff' , 16948   , 'cool-story-bro-house'                  ,              ) ,
-  'CREEPER'           : ('AdviceDogSpinoff' , 173501  , 'Minecraft-Creeper'                     ,              ) ,
-  'C_WOLF'            : ('AdviceDogSpinoff' , 931     , 'Courage-Wolf'                          ,              ) ,
-  'F_FRY'             : ('AdviceDogSpinoff' , 84688   , 'Futurama-Fry'                          ,              ) ,
-  'G_GRANDPA'         : ('AdviceDogSpinoff' , 185650  , 'Grumpy-Grandpa'                        ,              ) ,
-  'H_MERMAID'         : ('AdviceDogSpinoff' , 405224  , 'Hipster-Mermaid'                       ,              ) ,
-  'I_DONT_ALWAYS'     : ('AdviceDogSpinoff' , 38926   , 'The-Most-Interesting-Man-in-the-World' ,              ) ,
-  'I_WOLF'            : ('AdviceDogSpinoff' , 926     , 'Insanity-Wolf'                         ,              ) ,
-  'J_DUCREUX'         : ('AdviceDogSpinoff' , 1356    , 'Joseph-Ducreux'                        ,              ) ,
-  'KEANU'             : ('AdviceDogSpinoff' , 47718   , 'Keanu-reeves'                          ,              ) ,
-  'MINECRAFT'         : ('AdviceDogSpinoff' , 122309  , 'Minecraft'                             ,              ) ,
-  'O-RLY-OWL'         : ('AdviceDogSpinoff' , 117041  , 'O-RLY-OWL'                             , 'ORLY???'    ) ,
-  'OBAMA'             : ('AdviceDogSpinoff' , 1332    , 'Obama-'                                ,              ) ,
-  'PATRICK'           : ('AdviceDogSpinoff' , 62223   , 'Push-it-somewhere-else-Patrick'        ,              ) ,
-  'PHILOSORAPTOR'     : ('AdviceDogSpinoff' , 984     , 'Philosoraptor'                         ,              ) ,
-  'P_OAK'             : ('AdviceDogSpinoff' , 24321   , 'Professor-Oak'                         ,              ) ,
-  'SCUMBAG'           : ('AdviceDogSpinoff' , 364688  , 'Scumbag-Steve'                         ,              ) ,
-  'SERIOUS_FISH'      : ('AdviceDogSpinoff' , 6374627 , 'Spongebob-Serious-Fish'                ,              ) ,
-  'SNOB'              : ('AdviceDogSpinoff' , 2994    , 'Snob'                                  ,              ) ,
-  'SPARTA'            : ('AdviceDogSpinoff' , 1013    , 'sparta'                                ,              ) ,
-  'SPIDERMAN'         : ('AdviceDogSpinoff' , 1037    , 'Question-Spiderman'                    ,              ) ,
-  'SWEDISH_CHEF'      : ('AdviceDogSpinoff' , 186651  , 'Swedish-Chef'                          ,              ) ,
-  'S_AWKWARD_PENGUIN' : ('AdviceDogSpinoff' , 983     , 'Socially-Awkward-Penguin'              ,              ) ,
-  'TOWNCRIER'         : ('AdviceDogSpinoff' , 434537  , 'Towncrier'                             ,              ) ,
-  'TROLLFACE'         : ('AdviceDogSpinoff' , 1030    , 'Troll-Face'                            ,              ) ,
-  'UNICORN_BOY'       : ('AdviceDogSpinoff' , 57022   , 'unicorn-boy'                           ,              ) ,
-  'US_POINT'          : ('AdviceDogSpinoff' , 131083  , 'Uncle-Sam-Point'                       , 'I WANT YOU' ) ,
-  'V_BABY'            : ('AdviceDogSpinoff' , 11140   , 'Victory-Baby'                          ,              ) ,
-  'XZIBIT'            : ('AdviceDogSpinoff' , 3114    , 'XZIBIT'                                ,              ) ,
-  'Y_U_NO'            : ('AdviceDogSpinoff' , 165241  , 'Y-U-NO'                                , 'Y U NO'     ) ,
-  'BATMAN'            : ('Vertical'         , 148359  , 'batman-panal-ryan'                     ,              ) ,
-  'INCEPTION'         : ('Vertical'         , 107949  , 'Inception'                             ,              ) ,
-  'NEO'               : ('Vertical'         , 173419  , 'Neo'                                   ,              ) ,
-  'THE_ROCK'          : ('Vertical'         , 417195  , 'The-Rock-driving'                      ,              ) ,
-}
+GENURL = 'http://memegenerator.net'
+POPULAR = 'memes/popular/alltime'
+SEARCH = 'memes/search?q=%s'
+IMAGES = 'http://images.memegenerator.net/images/400x'
 
-
-def create_meme(data):
-    pq = PyQuery(url=GENURL, data=data, method='post')
-    return pq.find('a img.large').attr('src')
-
-def get_meme_url(meme):
-    gen = GENERATORS.get(meme)
-    if gen:
-        pq = PyQuery(url="http://memegenerator.net/%s" % gen[2])
-        return pq.find('a img.large').attr('src')
-    else:
-        return None
 
 def list_memes(pattern=None):
     memeinfo = []
-    pattern = pattern and pattern.lower()
-    for optname, specs in GENERATORS.items():
-        if not pattern or (pattern in optname.lower() or pattern in specs[2].lower()):
-            memeinfo.append((optname, specs[2]))
-    memeinfo.sort()
+    if pattern:
+        query = SEARCH % quote(pattern)
+        url = '%s/%s' % (GENURL, query)
+    else:
+        url = '%s/%s' % (GENURL, POPULAR)
+    pq = PyQuery(url=url)
+    nodes = pq.find('#generatorGallery li div.generator_wide table tr')
+    if len(nodes) > 0:
+        for n in nodes:
+            tq = PyQuery(n)
+            memeinfo.append({
+                'title': tq.find('.title a')[0].attrib['href'][1:],
+                'score': tq.find('.score').text(),
+                'image': tq.find('img')[0].attrib['src'].split('/')[-1],
+            })
+    memeinfo = sorted(memeinfo, key=lambda k: 0 - int(k['score']))
     return memeinfo
 
 def pp_memes(memelist):
     if len(memelist) > 0:
-        keys = [t[0] for t in memelist]
+        keys = [t['title'] for t in memelist]
         keys.sort(cmp=lambda x,y: len(x)-len(y))
         maxlen = len(keys.pop())
-        for k,m in memelist:
-            print '%s  %s' % (k.ljust(maxlen), m)
+        for m in memelist:
+            print '%s  %s  %s' % (m['title'].ljust(maxlen),
+                                  m['score'].ljust(6),
+                                  "%s/%s" % (IMAGES, m['image']))
     else:
         print 'No matches'
 
+def create_meme(title, args):
+    url = "%s/%s" % (GENURL, title)
+    pq = PyQuery(url=url)
+    form = pq.find('div.instance_form_create_small form')
+    if len(form) == 0:
+        print "Error: something changed or something weird happened."
+    else:
+        url = "%s%s" % (GENURL, form[0].attrib['action'])
+        data = {
+            'languageCode': 'en',
+            'generatorID': form.find('#generatorID').val(),
+            'imageID': form.find('#imageID').val(),
+            'text0': args[0],
+            'text1': len(args) > 1 and args[1] or '',
+        }
+        postq = PyQuery(url=url, data=data, method='post')
+        print GENURL + postq.find('div.instance_large img')[0].attrib['src']
 
 if __name__ == '__main__':
     from optparse import OptionParser
-    parser = OptionParser(usage="usage: %prog <meme> <line1> [additional lines...]")
-    parser.add_option('-l', '--list', action='store_true', dest='memelist', default=False, help='list all available memes')
-    parser.add_option('-s', '--search', metavar='STRING', help='list memes with name or option containing string')
-    parser.add_option('-p', '--preview_url', default=False, metavar='MEME', help="Prints the URL for the meme's base image. Does not generate.")
+    usage = ("usage: %prog <meme> <line1> <line2>\n"
+             "or: %prog -s <pattern> <line1> <line2>\n"
+             "In the first form you must provide a valid meme name (which"
+             " can be determined by running %prog -l or %prog -s <pattern>"
+             " with no arguments).\n"
+             "In the second form the script will use the highest scoring"
+             " character matching the search pattern.")
+    parser = OptionParser(usage=usage)
+    parser.add_option('-l', '--list', action='store_true',
+                      dest='memelist', default=False,
+                      help='list popular meme characters (up to 12)')
+    parser.add_option('-s', '--search', metavar='STRING',
+                      help='list meme characters matching search pattern (up to 12)')
     (options, args) = parser.parse_args()
 
     if len(args) == 0:
-        if options.memelist or options.search:
+        if options.memelist:
             pp_memes(list_memes(options.search))
-        if options.preview_url:
-            print get_meme_url(options.preview_url)
     else:
-        meme = GENERATORS.get(args.pop(0))
-        if meme:
-            data = {
-                'templateType': meme[0],
-                'templateID': meme[1],
-                'generatorName': meme[2],
-            }
-            idx = 0
-            if len(meme) == 4:
-                data.update({'text0': meme[3]})
-                idx = 1
-            for line in args:
-                data.update({'text%d' % idx: line})
-                idx += 1
-            print create_meme(data)
+        if options.search:
+            matches = list_memes(options.search)
+            if len(matches) > 0:
+                meme = matches[0]['title'] # default to top scoring match
         else:
-            print 'No meme specified for "%s"' % meme
+            meme = args.pop(0)
+
+        if meme:
+            create_meme(meme, args)
+        else:
+            print "No memes found matching %s" % meme
