@@ -6,8 +6,8 @@ Place meme.py somewhere on your PATH. Requires PyQuery.
 Usage
 =====
 
-| Usage: `meme.py <meme> <line1> <line2>`
-| or: `meme.py -s <pattern> <line1> <line2>`
+> Usage: `meme.py <meme> <line1> <line2>`
+> or: `meme.py -s <pattern> <line1> <line2>`
 
 In the first form you must provide a valid meme name (which can be determined
 by running meme.py -l or meme.py -s <pattern> with no arguments).
@@ -24,10 +24,10 @@ Options:
 Examples::
 
   $ meme.py Y-U-No "Y U NO" "make command line memes"
-  # link output
+  http://memegenerator.net/cache/instances/400x/11/12003/12291442.jpg
 
   $ meme.py -s cat "Business Cat" "is most popular cat"
-  #link output
+  http://memegenerator.net/cache/instances/400x/11/12003/12291472.jpg
 
   $ meme.py -s cat
 
@@ -63,6 +63,7 @@ Examples::
 Future
 ======
 
+* provide option to use the API instead if a username and password are specified
 * Package this "properly".
 * Allow user config in ~/.memepy
 * Automatically copy url to clipboard
