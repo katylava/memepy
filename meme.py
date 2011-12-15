@@ -77,7 +77,7 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
 
     if len(args) == 0:
-        if options.memelist:
+        if options.memelist or options.search:
             pp_memes(list_memes(options.search))
     else:
         if options.search:
