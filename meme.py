@@ -81,6 +81,8 @@ if __name__ == '__main__':
     if len(args) == 0:
         if options.memelist or options.search:
             pp_memes(list_memes(options.search))
+        else:
+            parser.error('Requires -s, -l, or args.')
     else:
         if options.search:
             matches = list_memes(options.search)
