@@ -59,7 +59,7 @@ def create_meme(title, args):
             'text1': len(args) > 1 and args[1] or '',
         }
         postq = PyQuery(url=url, data=data, method='post')
-        return GENURL + postq.find('div.instance_large img')[0].attrib['src']
+        return postq.find('div.instance_large img')[0].attrib['src']
 
 if __name__ == '__main__':
     from optparse import OptionParser
