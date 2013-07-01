@@ -5,17 +5,17 @@ from urllib import quote
 
 GENURL = 'http://memegenerator.co'
 POPULAR = 'memes/top/alltime'
-SEARCH = 'memes/search?q=%s'
+SEARCH = 'memes/search?q={0}'
 IMAGES = 'http://images.memegenerator.co/images/400x'
 
 
 def list_memes(pattern=None):
     memeinfo = []
     if pattern:
-        query = SEARCH % quote(pattern)
-        url = '%s/%s' % (GENURL, query)
+        query = SEARCH.format(quote(pattern))
+        url = '{0}/{1}'.format(GENURL, query)
     else:
-        url = '%s/%s' % (GENURL, POPULAR)
+        url = '{0}/{1}'.format(GENURL, POPULAR)
     pq = PyQuery(url=url)
     nodes = pq.find('ul.gallery li div.generator')
     if len(nodes) > 0:
@@ -35,24 +35,25 @@ def pp_memes(memelist):
         keys = [t['title'] for t in memelist]
         keys.sort(cmp=lambda x, y: len(x) - len(y))
         maxlen = len(keys.pop())
-        print "%s  %s  Template" % ('Name'.ljust(maxlen), 'Score'.ljust(6))
-        print "%s  ------  --------" % ('-' * maxlen)
+        print "{0}  {1}  Template".format('Name'.ljust(maxlen),
+                                          'Score'.ljust(6))
+        print "{0}  ------  --------".format('-' * maxlen)
         for m in memelist:
-            print '%s  %s  %s' % (m['title'].ljust(maxlen),
-                                  m['score'].ljust(6),
-                                  "%s/%s" % (IMAGES, m['image']))
+            print '{0}  {1}  {2}'.format(m['title'].ljust(maxlen),
+                                         m['score'].ljust(6),
+                                         "{0}/{1}".format(IMAGES, m['image']))
     else:
         print 'No matches'
 
 
 def create_meme(title, args):
-    url = "%s/%s" % (GENURL, title)
+    url = "{0}/{1}".format(GENURL, title)
     pq = PyQuery(url=url)
     form = pq.find('div.instance_form_create_small form')
     if len(form) == 0:
         return "Error: something changed or something weird happened."
     else:
-        url = "%s%s" % (GENURL, form[0].attrib['action'])
+        url = "{0}{1}".format(GENURL, form[0].attrib['action'])
         data = {
             'languageCode': 'en',
             'generatorID': form.find('#generatorID').val(),
@@ -99,7 +100,7 @@ if __name__ == '__main__':
             if meme:
                 print create_meme(meme, args)
             else:
-                print "No memes found matching %s" % meme
+                print "No memes found matching {0}".format(meme)
 
     except KeyboardInterrupt:
         pass
