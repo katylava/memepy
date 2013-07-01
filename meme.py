@@ -1,21 +1,25 @@
 #!/usr/bin/env python
 
+import requests
 from pyquery import PyQuery
 from urllib import quote
 
 GENURL = 'http://memegenerator.co'
-POPULAR = 'memes/top/alltime'
-SEARCH = 'memes/search?q={0}'
-IMAGES = 'http://images.memegenerator.co/images/400x'
+INFO = "{0}/PageData/Caption?urlName={{0}}".format(GENURL)
+ACTION = "{0}/Xhr/Instance_Caption".format(GENURL)
+POPULAR = '{0}/memes/top/alltime'.format(GENURL)
+SEARCH = '{0}/memes/search?q={{0}}'.format(GENURL)
+IMAGES = 'http://images.memegenerator.co/images/400x/{0}'
+INSTANCE = "http://cdn0.meme.li/instances/300x300/{0}.jpg"
 
 
 def list_memes(pattern=None):
     memeinfo = []
     if pattern:
         query = SEARCH.format(quote(pattern))
-        url = '{0}/{1}'.format(GENURL, query)
+        url = SEARCH.format(query)
     else:
-        url = '{0}/{1}'.format(GENURL, POPULAR)
+        url = POPULAR
     pq = PyQuery(url=url)
     nodes = pq.find('ul.gallery li div.generator')
     if len(nodes) > 0:
@@ -41,28 +45,24 @@ def pp_memes(memelist):
         for m in memelist:
             print '{0}  {1}  {2}'.format(m['title'].ljust(maxlen),
                                          m['score'].ljust(6),
-                                         "{0}/{1}".format(IMAGES, m['image']))
+                                         IMAGES.format(m['image']))
     else:
         print 'No matches'
 
 
 def create_meme(title, args):
-    url = "{0}/{1}".format(GENURL, title)
-    pq = PyQuery(url=url)
-    form = pq.find('div.instance_form_create_small form')
-    if len(form) == 0:
-        return "Error: something changed or something weird happened."
-    else:
-        url = "{0}{1}".format(GENURL, form[0].attrib['action'])
-        data = {
-            'languageCode': 'en',
-            'generatorID': form.find('#generatorID').val(),
-            'imageID': form.find('#imageID').val(),
-            'text0': args[0],
-            'text1': len(args) > 1 and args[1] or '',
-        }
-        postq = PyQuery(url=url, data=data, method='post')
-        return postq.find('div.instance_large img')[0].attrib['src']
+    memeinfo = requests.get(INFO.format(title))
+    data = {
+        'languageCode': 'en',
+        'urlName': title,
+        'imageID': memeinfo.json()['Item']['imageID'],
+        'text0': args[0],
+        'text1': len(args) > 1 and args[1] or '',
+    }
+    result = requests.post(ACTION, data=data)
+    instance_id = result.json()['instanceID']
+    instance_url = INSTANCE.format(instance_id)
+    return INSTANCE.format(instance_id)
 
 if __name__ == '__main__':
     from optparse import OptionParser
