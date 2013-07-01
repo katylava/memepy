@@ -29,10 +29,11 @@ def list_memes(pattern=None):
     memeinfo = sorted(memeinfo, key=lambda k: 0 - int(k['score']))
     return memeinfo
 
+
 def pp_memes(memelist):
     if len(memelist) > 0:
         keys = [t['title'] for t in memelist]
-        keys.sort(cmp=lambda x,y: len(x)-len(y))
+        keys.sort(cmp=lambda x, y: len(x) - len(y))
         maxlen = len(keys.pop())
         print "%s  %s  Template" % ('Name'.ljust(maxlen), 'Score'.ljust(6))
         print "%s  ------  --------" % ('-' * maxlen)
@@ -42,6 +43,7 @@ def pp_memes(memelist):
                                   "%s/%s" % (IMAGES, m['image']))
     else:
         print 'No matches'
+
 
 def create_meme(title, args):
     url = "%s/%s" % (GENURL, title)
@@ -75,23 +77,29 @@ if __name__ == '__main__':
                       dest='memelist', default=False,
                       help='list popular meme characters (up to 12)')
     parser.add_option('-s', '--search', metavar='STRING',
-                      help='list meme characters matching search pattern (up to 12)')
+                      help='list meme characters matching search pattern'
+                           '(up to 12)')
     (options, args) = parser.parse_args()
 
-    if len(args) == 0:
-        if options.memelist or options.search:
-            pp_memes(list_memes(options.search))
-        else:
-            parser.error('Requires -s, -l, or args.')
-    else:
-        if options.search:
-            matches = list_memes(options.search)
-            if len(matches) > 0:
-                meme = matches[0]['title'] # default to top scoring match
-        else:
-            meme = args.pop(0)
+    try:
 
-        if meme:
-            print create_meme(meme, args)
+        if len(args) == 0:
+            if options.memelist or options.search:
+                pp_memes(list_memes(options.search))
+            else:
+                parser.error('Requires -s, -l, or args.')
         else:
-            print "No memes found matching %s" % meme
+            if options.search:
+                matches = list_memes(options.search)
+                if len(matches) > 0:
+                    meme = matches[0]['title']  # default to top scoring match
+            else:
+                meme = args.pop(0)
+
+            if meme:
+                print create_meme(meme, args)
+            else:
+                print "No memes found matching %s" % meme
+
+    except KeyboardInterrupt:
+        pass
