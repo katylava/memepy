@@ -1,7 +1,7 @@
 Installation
 ============
 
-Place meme.py somewhere on your PATH. Requires PyQuery.
+Place meme.py somewhere on your PATH. Requires requests and PyQuery.
 
 Usage
 =====

@@ -61,8 +61,8 @@ def create_meme(title, args):
     }
     result = requests.post(ACTION, data=data)
     instance_id = result.json()['instanceID']
-    instance_url = INSTANCE.format(instance_id)
     return INSTANCE.format(instance_id)
+
 
 if __name__ == '__main__':
     from optparse import OptionParser
