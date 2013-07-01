@@ -4,7 +4,7 @@ from pyquery import PyQuery
 from urllib import quote
 
 GENURL = 'http://memegenerator.net'
-POPULAR = 'memes/popular/alltime'
+POPULAR = 'memes/top/alltime'
 SEARCH = 'memes/search?q=%s'
 IMAGES = 'http://images.memegenerator.net/images/400x'
 
@@ -17,14 +17,14 @@ def list_memes(pattern=None):
     else:
         url = '%s/%s' % (GENURL, POPULAR)
     pq = PyQuery(url=url)
-    nodes = pq.find('#generatorGallery li div.generator_wide table tr')
+    nodes = pq.find('ul.gallery li div.generator')
     if len(nodes) > 0:
         for n in nodes:
             tq = PyQuery(n)
             memeinfo.append({
-                'title': tq.find('.title a')[0].attrib['href'][1:],
-                'score': tq.find('.score').text(),
-                'image': tq.find('img')[0].attrib['src'].split('/')[-1],
+                'title': tq.find('a')[0].attrib['href'][1:],
+                'score': tq.find('div.info div.score').text(),
+                'image': tq.find('a img')[0].attrib['src'].split('/')[-1],
             })
     memeinfo = sorted(memeinfo, key=lambda k: 0 - int(k['score']))
     return memeinfo
