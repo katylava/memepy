@@ -3,10 +3,10 @@
 from pyquery import PyQuery
 from urllib import quote
 
-GENURL = 'http://memegenerator.net'
+GENURL = 'http://memegenerator.co'
 POPULAR = 'memes/top/alltime'
 SEARCH = 'memes/search?q=%s'
-IMAGES = 'http://images.memegenerator.net/images/400x'
+IMAGES = 'http://images.memegenerator.co/images/400x'
 
 
 def list_memes(pattern=None):
