@@ -64,7 +64,7 @@ def create_meme(title, args):
     return INSTANCE.format(instance_id)
 
 
-if __name__ == '__main__':
+def cli():
     from optparse import OptionParser
     usage = ("usage: %prog <meme> <line1> <line2>\n"
              "or: %prog -s <pattern> <line1> <line2>\n"
@@ -82,25 +82,27 @@ if __name__ == '__main__':
                            '(up to 12)')
     (options, args) = parser.parse_args()
 
-    try:
-
-        if len(args) == 0:
-            if options.memelist or options.search:
-                pp_memes(list_memes(options.search))
-            else:
-                parser.error('Requires -s, -l, or args.')
+    if len(args) == 0:
+        if options.memelist or options.search:
+            pp_memes(list_memes(options.search))
         else:
-            if options.search:
-                matches = list_memes(options.search)
-                if len(matches) > 0:
-                    meme = matches[0]['title']  # default to top scoring match
-            else:
-                meme = args.pop(0)
+            parser.error('Requires -s, -l, or args.')
+    else:
+        if options.search:
+            matches = list_memes(options.search)
+            if len(matches) > 0:
+                meme = matches[0]['title']  # default to top scoring match
+        else:
+            meme = args.pop(0)
 
-            if meme:
-                print create_meme(meme, args)
-            else:
-                print "No memes found matching {0}".format(meme)
+        if meme:
+            print create_meme(meme, args)
+        else:
+            print "No memes found matching {0}".format(meme)
 
+
+if __name__ == '__main__':
+    try:
+        cli()
     except KeyboardInterrupt:
         pass
