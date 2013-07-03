@@ -1,0 +1,6 @@
+1.0.0
+------
+
+First packaged release.
+
+- Updated for changes on memegenerator.co
