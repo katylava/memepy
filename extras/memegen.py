@@ -1,6 +1,7 @@
 import shlex
 from util import hook, meme
 
+
 @hook.command('meme')
 @hook.command
 def memegen(inp, nick='', chan='', say=None):
@@ -24,7 +25,7 @@ def memegen(inp, nick='', chan='', say=None):
         if argc > 2:
             number = int(parts[2])
 
-        if pattern and pattern in ['-','pop','popular','--']:
+        if pattern and pattern in ['-', 'pop', 'popular', '--']:
             pattern = None
 
         matches = meme.list_memes(pattern)
@@ -35,8 +36,8 @@ def memegen(inp, nick='', chan='', say=None):
         if len(matches) == 0:
             result = "no meme characters match search"
         elif not number:
-            result = ' '.join(["[%d] %s:%s" % (k+1, v['title'], v['score']) \
-                              for k,v in enumerate(matches)])
+            result = ' '.join(["[%d] %s:%s" % (k+1, v['title'], v['score'])
+                              for k, v in enumerate(matches)])
         else:
             match = matches[number-1]
             result = "%s [%s]: %s (%d/%d)" % (
@@ -46,7 +47,7 @@ def memegen(inp, nick='', chan='', say=None):
                 number,
                 len(matches),
             )
-    elif cmd in ['gen','g','generate','-', 'fuzzy']:
+    elif cmd in ['gen', 'g', 'generate', '-', 'fuzzy']:
         if argc < 4:
             result = errormsg
         else:
