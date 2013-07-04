@@ -1,5 +1,6 @@
 import shlex
-from util import hook, meme
+import meme
+from util import hook
 
 
 @hook.command('meme')
