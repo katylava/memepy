@@ -1,35 +1,30 @@
 #!/usr/bin/env python
 
 import requests
-from pyquery import PyQuery
 from urllib import quote
 
 GENURL = 'http://memegenerator.co'
 INFO = "{0}/PageData/Caption?urlName={{0}}".format(GENURL)
 ACTION = "{0}/Xhr/Instance_Caption".format(GENURL)
-POPULAR = '{0}/memes/top/alltime'.format(GENURL)
-SEARCH = '{0}/memes/search?q={{0}}'.format(GENURL)
-IMAGES = 'http://images.memegenerator.co/images/400x/{0}'
+POPULAR = '{0}/Xhr/Generator_Search?q='.format(GENURL)
+SEARCH = '{0}/Xhr/Generator_Search?q={{0}}'.format(GENURL)
+IMAGES = 'http://images.memegenerator.co/images/400x/{0}.jpg'
 INSTANCE = "http://cdn0.meme.li/instances/300x300/{0}.jpg"
 
 
 def list_memes(pattern=None):
     memeinfo = []
     if pattern:
-        query = SEARCH.format(quote(pattern))
-        url = SEARCH.format(query)
+        url = SEARCH.format(quote(pattern))
     else:
         url = POPULAR
-    pq = PyQuery(url=url)
-    nodes = pq.find('ul.gallery li div.generator')
-    if len(nodes) > 0:
-        for n in nodes:
-            tq = PyQuery(n)
-            memeinfo.append({
-                'title': tq.find('a')[0].attrib['href'][1:],
-                'score': tq.find('div.info div.score').text(),
-                'image': tq.find('a img')[0].attrib['src'].split('/')[-1],
-            })
+    result = requests.get(url)
+    for m in result.json():
+        memeinfo.append({
+            'title': m['urlName'],
+            'score': str(m['totalVotesScore']),
+            'image': m['imageID'],
+        })
     memeinfo = sorted(memeinfo, key=lambda k: 0 - int(k['score']))
     return memeinfo
 
