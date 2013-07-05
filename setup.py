@@ -32,5 +32,5 @@ setup(
             'meme = meme.meme:cli',
         ],
     },
-    install_requires=['pyquery', 'requests']
+    install_requires=['requests']
 )
