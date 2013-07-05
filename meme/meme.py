@@ -89,6 +89,7 @@ def cli():
         else:
             parser.error('Requires -s, -l, or args.')
     else:
+        title = None  # In case we don't find a title
         if options.search:
             matches = list_memes(options.search)
             if len(matches) > 0:
