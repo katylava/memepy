@@ -1,7 +1,7 @@
 Installation
 ============
 
-``pip install memepy``
+``pip install meme``
 
 Installs ``meme`` command line tool.
 
@@ -25,13 +25,13 @@ Options:
 
 Examples::
 
-  $ meme.py Y-U-No "Y U NO" "make command line memes"
+  $ meme Y-U-No "Y U NO" "make command line memes"
   http://cdn0.meme.li/instances/300x300/39417053.jpg
 
   $ meme.py -s cat "Business Cat" "is most popular cat"
   http://cdn0.meme.li/instances/300x300/39417065.jpg
 
-  $ meme.py -s cat
+  $ meme -s cat
 
       Name                     Score   Template
       -----------------------  ------  --------
@@ -47,7 +47,7 @@ Examples::
       Tard-The-Grumpy-Cat      6       http://images.memegenerator.co/images/400x/6636863.jpg
       Diabetic-Cat             -68     http://images.memegenerator.co/images/400x/564471.jpg
 
-  $ meme.py -l
+  $ meme -l
 
       Name                                   Score   Template
       -------------------------------------  ------  --------
