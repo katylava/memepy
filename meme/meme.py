@@ -99,7 +99,7 @@ def cli():
         if title:
             print create_meme(title, args)
         else:
-            print "No memes found matching {0}".format(title)
+            print "No memes found matching {0}".format(options.search)
 
 
 if __name__ == '__main__':
