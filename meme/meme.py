@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import requests
+from optparse import OptionParser
 from urllib import quote
+
 
 GENURL = 'http://memegenerator.co'
 INFO = "{0}/PageData/Caption?urlName={{0}}".format(GENURL)
@@ -60,7 +62,6 @@ def create_meme(title, args):
 
 
 def cli():
-    from optparse import OptionParser
     usage = ("usage: %prog <meme> <line1> <line2>\n"
              "or: %prog -s <pattern> <line1> <line2>\n"
              "In the first form you must provide a valid meme name (which"
@@ -75,25 +76,30 @@ def cli():
     parser.add_option('-s', '--search', metavar='STRING',
                       help='list meme characters matching search pattern'
                            '(up to 12)')
+    parser.add_option('-v', '--version', action='store_true',
+                      help='show version')
     (options, args) = parser.parse_args()
 
     if len(args) == 0:
         if options.memelist or options.search:
             pp_memes(list_memes(options.search))
+        elif options.version:
+            from __init__ import __version__
+            print __version__
         else:
             parser.error('Requires -s, -l, or args.')
     else:
         if options.search:
             matches = list_memes(options.search)
             if len(matches) > 0:
-                meme = matches[0]['title']  # default to top scoring match
+                title = matches[0]['title']  # default to top scoring match
         else:
-            meme = args.pop(0)
+            title = args.pop(0)
 
-        if meme:
-            print create_meme(meme, args)
+        if title:
+            print create_meme(title, args)
         else:
-            print "No memes found matching {0}".format(meme)
+            print "No memes found matching {0}".format(title)
 
 
 if __name__ == '__main__':
