@@ -12,7 +12,7 @@ Usage
     or: `meme -s <pattern> <line1> <line2>`
 
 In the first form you must provide a valid meme name (which can be determined
-by running meme.py -l or meme.py -s <pattern> with no arguments).
+by running ``meme -l`` or ``meme -s <pattern>`` with no arguments).
 
 In the second form the script will use the highest scoring character matching
 the search pattern.
@@ -28,7 +28,7 @@ Examples::
   $ meme Y-U-No "Y U NO" "make command line memes"
   http://cdn0.meme.li/instances/300x300/39417053.jpg
 
-  $ meme.py -s cat "Business Cat" "is most popular cat"
+  $ meme -s cat "Business Cat" "is most popular cat"
   http://cdn0.meme.li/instances/300x300/39417065.jpg
 
   $ meme -s cat
