@@ -32,5 +32,6 @@ setup(
             'meme = meme.meme:cli',
         ],
     },
-    install_requires=['requests']
+    install_requires=['requests'],
+    test_suite='runtests.runtests',
 )
