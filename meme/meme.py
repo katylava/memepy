@@ -61,24 +61,7 @@ def create_meme(title, args):
     return INSTANCE.format(instance_id)
 
 
-def cli():
-    usage = ("usage: %prog <meme> <line1> <line2>\n"
-             "or: %prog -s <pattern> <line1> <line2>\n"
-             "In the first form you must provide a valid meme name (which"
-             " can be determined by running %prog -l or %prog -s <pattern>"
-             " with no arguments).\n"
-             "In the second form the script will use the highest scoring"
-             " character matching the search pattern.")
-    parser = OptionParser(usage=usage)
-    parser.add_option('-l', '--list', action='store_true',
-                      dest='memelist', default=False,
-                      help='list popular meme characters (up to 12)')
-    parser.add_option('-s', '--search', metavar='STRING',
-                      help='list meme characters matching search pattern'
-                           '(up to 12)')
-    parser.add_option('-v', '--version', action='store_true',
-                      help='show version')
-    (options, args) = parser.parse_args()
+def main(options, args):
 
     if len(args) == 0:
         if options.memelist or options.search:
@@ -101,6 +84,26 @@ def cli():
             print create_meme(title, args)
         else:
             print "No memes found matching {0}".format(options.search)
+
+
+def cli():
+    usage = ("usage: %prog <meme> <line1> <line2>\n"
+             "or: %prog -s <pattern> <line1> <line2>\n"
+             "In the first form you must provide a valid meme name (which"
+             " can be determined by running %prog -l or %prog -s <pattern>"
+             " with no arguments).\n"
+             "In the second form the script will use the highest scoring"
+             " character matching the search pattern.")
+    parser = OptionParser(usage=usage)
+    parser.add_option('-l', '--list', action='store_true',
+                      dest='memelist', default=False,
+                      help='list popular meme characters (up to 12)')
+    parser.add_option('-s', '--search', metavar='STRING',
+                      help='list meme characters matching search pattern'
+                           '(up to 12)')
+    parser.add_option('-v', '--version', action='store_true',
+                      help='show version')
+    main(*parser.parse_args())
 
 
 if __name__ == '__main__':
