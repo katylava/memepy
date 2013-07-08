@@ -2,7 +2,11 @@
 
 import requests
 from optparse import OptionParser
-from urllib import quote
+
+try:
+    from urllib import quote
+except ImportError:
+    from urllib.parse import quote
 
 
 GENURL = 'http://memegenerator.co'
@@ -34,17 +38,20 @@ def list_memes(pattern=None):
 def pp_memes(memelist):
     if len(memelist) > 0:
         keys = [t['title'] for t in memelist]
-        keys.sort(cmp=lambda x, y: len(x) - len(y))
+        keys.sort(key=lambda x: len(x))
         maxlen = len(keys.pop())
-        print "{0}  {1}  Template".format('Name'.ljust(maxlen),
-                                          'Score'.ljust(6))
-        print "{0}  ------  --------".format('-' * maxlen)
+        output = ''
+        output +=  "{0}  {1}  Template\n".format('Name'.ljust(maxlen),
+                                                 'Score'.ljust(6))
+        output += "{0}  ------  --------\n".format('-' * maxlen)
         for m in memelist:
-            print '{0}  {1}  {2}'.format(m['title'].ljust(maxlen),
-                                         m['score'].ljust(6),
-                                         IMAGES.format(m['image']))
+            output += "{0}  {1}  {2}\n".format(m['title'].ljust(maxlen),
+                                               m['score'].ljust(6),
+                                               IMAGES.format(m['image']))
     else:
-        print 'No matches'
+        output = 'No matches'
+
+    return output
 
 
 def create_meme(title, args):
@@ -62,13 +69,13 @@ def create_meme(title, args):
 
 
 def main(options, args):
-
+    output = 'Nothing happened'
     if len(args) == 0:
         if options.memelist or options.search:
-            pp_memes(list_memes(options.search))
+            output = pp_memes(list_memes(options.search))
         elif options.version:
             from __init__ import __version__
-            print __version__
+            output =  __version__
         else:
             parser.error('Requires -s, -l, or args.')
     else:
@@ -81,12 +88,13 @@ def main(options, args):
             title = args.pop(0)
 
         if title:
-            print create_meme(title, args)
+            output = create_meme(title, args)
         else:
-            print "No memes found matching {0}".format(options.search)
+            output = "No memes found matching {0}".format(options.search)
+    return output
 
 
-def cli():
+def parse_args(arglist=None):
     usage = ("usage: %prog <meme> <line1> <line2>\n"
              "or: %prog -s <pattern> <line1> <line2>\n"
              "In the first form you must provide a valid meme name (which"
@@ -103,11 +111,19 @@ def cli():
                            '(up to 12)')
     parser.add_option('-v', '--version', action='store_true',
                       help='show version')
-    main(*parser.parse_args())
+    if arglist:
+        return parser.parse_args(arglist)
+    else:
+        return parser.parse_args()
+
+
+def cli(arglist=None):
+    options, args = parse_args(arglist)
+    return main(options, args)
 
 
 if __name__ == '__main__':
     try:
-        cli()
+        print(cli())
     except KeyboardInterrupt:
         pass
