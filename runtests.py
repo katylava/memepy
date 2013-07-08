@@ -1,9 +1,9 @@
 import unittest
-import meme
+from meme.tests import test_meme
 
 
 def runtests():
-    suite = unittest.TestLoader().loadTestsFromModule(meme.tests)
+    suite = unittest.TestLoader().loadTestsFromModule(test_meme)
     unittest.TextTestRunner(verbosity=2).run(suite)
 
 
