@@ -1,3 +1,8 @@
+Status
+======
+
+Currently broken because memegenerator.co changed again. Working on fixes.
+
 Installation
 ============
 
