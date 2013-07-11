@@ -9,34 +9,69 @@ except ImportError:
     from urllib.parse import quote
 
 
-GENURL = 'http://memegenerator.co'
-INFO = "{0}/PageData/Caption?urlName={{0}}".format(GENURL)
-ACTION = "{0}/Xhr/Instance_Caption".format(GENURL)
-POPULAR = '{0}/Xhr/Generator_Search?q='.format(GENURL)
-SEARCH = '{0}/Xhr/Generator_Search?q={{0}}'.format(GENURL)
-IMAGES = 'http://images.memegenerator.co/images/400x/{0}.jpg'
-INSTANCE = "http://cdn0.meme.li/instances/300x300/{0}.jpg"
+FIX_MEME = "Time to fix meme again. Check https://pypi.python.org/pypi/meme" \
+           " for notice that it's being fixed. If no notice, then ping" \
+           " me @katylava."
+
+# FOR ALL TO SEE
+USERNAME = 'memepy'
+PASSWORD = 'mghatesme'
+
+GENURL = 'http://version1.api.memegenerator.co'
+
+POPULAR_URL = '{0}/Generators_Select_ByPopular'.format(GENURL)
+POPULAR_DAT = {
+    'pageIndex': '0',
+    'pageSize': '12',
+    'days': '',
+}
+
+SEARCH_URL = '{0}/Generators_Search'.format(GENURL)
+SEARCH_DATA = {'q': None}
+
+INFO_URL = "{0}/Generator_Select_ByUrlNameOrGeneratorID".format(GENURL)
+INFO_DAT = {'urlName': None}
+
+ACTION_URL = "{0}/Instance_Create".format(GENURL)
+ACTION_DAT = {
+    'username': USERNAME,
+    'password': PASSWORD,
+    'languageCode': 'en',
+    'generatorID': None,
+    'imageID': None,
+    'text0': None,
+    'text1': None,
+}
 
 
 def list_memes(pattern=None):
     memeinfo = []
     if pattern:
-        url = SEARCH.format(quote(pattern))
+        url = SEARCH_URL
+        params = SEARCH_DAT.update({'q': pattern})
     else:
-        url = POPULAR
-    result = requests.get(url)
-    for m in result.json():
+        url = POPULAR_URL
+        params = POPULAR_DAT
+
+    result = requests.get(url, params=params).json()
+    if not result.get('success', False):
+        return FIX_MEME
+
+    for m in result['result']:
         memeinfo.append({
             'title': m['urlName'],
             'score': str(m['totalVotesScore']),
-            'image': m['imageID'],
+            'generator': str(m['generatorID']),
+            'image': m['imageUrl'],
+            'rank': m['ranking'],
         })
-    memeinfo = sorted(memeinfo, key=lambda k: 0 - int(k['score']))
     return memeinfo
 
 
 def pp_memes(memelist):
-    if len(memelist) > 0:
+    if memelist == FIX_MEME:
+        output = memelist
+    elif len(memelist) > 0:
         keys = [t['title'] for t in memelist]
         keys.sort(key=lambda x: len(x))
         maxlen = len(keys.pop())
@@ -47,7 +82,7 @@ def pp_memes(memelist):
         for m in memelist:
             output += "{0}  {1}  {2}\n".format(m['title'].ljust(maxlen),
                                                m['score'].ljust(6),
-                                               IMAGES.format(m['image']))
+                                               m['image'])
     else:
         output = 'No matches'
 
