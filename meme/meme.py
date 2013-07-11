@@ -27,7 +27,7 @@ POPULAR_DAT = {
 }
 
 SEARCH_URL = '{0}/Generators_Search'.format(GENURL)
-SEARCH_DATA = {'q': None}
+SEARCH_DAT = {'q': None}
 
 INFO_URL = "{0}/Generator_Select_ByUrlNameOrGeneratorID".format(GENURL)
 INFO_DAT = {'urlName': None}
@@ -55,7 +55,10 @@ def list_memes(pattern=None):
 
     result = requests.get(url, params=params).json()
     if not result.get('success', False):
-        return FIX_MEME
+        if result.get('errorMessage', None):
+            return result['errorMessage']
+        else:
+            return FIX_MEME
 
     for m in result['result']:
         memeinfo.append({
@@ -69,7 +72,7 @@ def list_memes(pattern=None):
 
 
 def pp_memes(memelist):
-    if memelist == FIX_MEME:
+    if not isinstance(memelist, list):
         output = memelist
     elif len(memelist) > 0:
         keys = [t['title'] for t in memelist]
