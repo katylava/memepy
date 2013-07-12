@@ -22,12 +22,16 @@ GENURL = 'http://version1.api.memegenerator.co'
 POPULAR_URL = '{0}/Generators_Select_ByPopular'.format(GENURL)
 POPULAR_DAT = {
     'pageIndex': '0',
-    'pageSize': '12',
+    'pageSize': '24',
     'days': '',
 }
 
 SEARCH_URL = '{0}/Generators_Search'.format(GENURL)
-SEARCH_DAT = {'q': None}
+SEARCH_DAT = {
+    'q': None,
+    'pageIndex': '0',
+    'pageSize': '24',
+}
 
 INFO_URL = "{0}/Generator_Select_ByUrlNameOrGeneratorID".format(GENURL)
 INFO_DAT = {'urlName': None}
@@ -48,7 +52,8 @@ def list_memes(pattern=None):
     memeinfo = []
     if pattern:
         url = SEARCH_URL
-        params = SEARCH_DAT.update({'q': pattern})
+        SEARCH_DAT.update({'q': pattern})
+        params = SEARCH_DAT
     else:
         url = POPULAR_URL
         params = POPULAR_DAT
@@ -68,6 +73,7 @@ def list_memes(pattern=None):
             'image': m['imageUrl'],
             'rank': m['ranking'],
         })
+    memeinfo.sort(key=lambda x: 0 - int(x['score']))
     return memeinfo
 
 
