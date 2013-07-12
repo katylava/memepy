@@ -8,7 +8,7 @@ from meme import meme
 ARGS_POPULAR = shlex.split('-l')
 ARGS_SEARCH = shlex.split('-s blah')
 ARGS_CREATE_EXPLICIT = shlex.split('title "line 1" "line 2"')
-ARGS_CREATE_SEARCH = shlex.split('-s blah "line 1" "line 2"')
+ARGS_CREATE_SEARCH = shlex.split('-u user -p pass -s blah "line 1" "line 2"')
 
 fp = lambda f: os.path.join(os.path.dirname(__file__), f)
 
@@ -18,28 +18,21 @@ FILE_ACTION_RESULT = fp('action_result.json')
 FILE_INFO = fp('info.json')
 
 
-def search_body(request, url, headers):
-    jsonfile = FILE_SEARCH if request.querystring.get('q', None) \
-                           else FILE_POPULAR
-    with open(jsonfile) as h:
-        return 200, headers, h.read()
-
-
 class TestMeme(unittest.TestCase):
     def setUp(self):
         content_type = 'application/json; charset=utf-8'
         httpretty.enable()
         with open(FILE_POPULAR) as h:
-            httpretty.register_uri(httpretty.GET, meme.POPULAR,
-                                   body=search_body, content_type=content_type)
+            httpretty.register_uri(httpretty.GET, meme.POPULAR_URL,
+                                   body=h.read(), content_type=content_type)
         with open(FILE_SEARCH) as h:
-            httpretty.register_uri(httpretty.GET, meme.SEARCH.format('blah'),
-                                   body=search_body, content_type=content_type)
+            httpretty.register_uri(httpretty.GET, meme.SEARCH_URL,
+                                   body=h.read(), content_type=content_type)
         with open(FILE_ACTION_RESULT) as h:
-            httpretty.register_uri(httpretty.POST, meme.ACTION,
+            httpretty.register_uri(httpretty.GET, meme.ACTION_URL,
                                    body=h.read(), content_type=content_type)
         with open(FILE_INFO) as h:
-            httpretty.register_uri(httpretty.GET, meme.INFO.format('1234'),
+            httpretty.register_uri(httpretty.GET, meme.INFO_URL,
                                    body=h.read(), content_type=content_type)
 
     def tearDown(self):

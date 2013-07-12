@@ -1,1 +1,15 @@
-{"displayName":"Business Cat","urlName":"Business-Cat","instancesCountRowNumber":53,"ranking":51,"instanceID":39511993,"mgUserID":-1585693254,"urlName1":null,"displayName1":null,"languageCode":"en","generatorID":308,"imageID":332591,"text0":"The boss","text1":"would like to see you","upVotesScore":0,"downVotesScore":0,"totalVotesScore":0,"isApproved":null,"created":"2013-07-08T13:00:00","createdDate":"2013-07-08T00:00:00","isBrandSafeText":true,"isBrandSafeImage":true,"commentsCount":0,"username":null,"isWorkSafeImage":true,"watermark":null,"generatorTypeID":0,"isRead":0,"previousInstanceID":39511992,"nextInstanceID":null,"entityVotesSummary":{"entity":"Instance/39511993","entityName":"Instance","entityID":39511993,"upVotesSum":0,"downVotesSum":0,"totalVotesSum":0,"userID":null,"userVoteScore":null}}
+{
+"success": true,
+"result": {
+"generatorID": 45,
+"displayName": "Insanity Wolf",
+"urlName": "Insanity-Wolf",
+"totalVotesScore": 0,
+"imageUrl": "http://cdn.memegenerator.net/images/400x/20.jpg",
+"instanceID": 39650668,
+"text0": "push a hipster down the stairs",
+"text1": "now look who's tumbling",
+"instanceImageUrl": "http://cdn.memegenerator.net/instances/400x/39650668.jpg",
+"instanceUrl": "http://memegenerator.co/instance/39650668"
+}
+}
