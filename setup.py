@@ -7,7 +7,7 @@ setup(
     name='meme',
     version=meme.__version__,
     description="Use the command line to generate memes on memegenerator.co",
-    long_description=open('README.rst').read(),
+    long_description=open('README.rst').read()+"\n\n"+open('CHANGES.txt').read(),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Environment :: Console",
