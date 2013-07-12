@@ -69,6 +69,10 @@ ACTION_DAT = {
 }
 
 
+def get_image_id_from_url(url):
+    return os.path.splitext(os.path.basename(url))[0]
+
+
 def list_memes(pattern=None):
     memeinfo = []
     if pattern:
@@ -119,18 +123,43 @@ def pp_memes(memelist):
     return output
 
 
-def create_meme(title, args):
-    memeinfo = requests.get(INFO.format(title))
-    data = {
-        'languageCode': 'en',
-        'urlName': title,
-        'imageID': memeinfo.json()['Item']['imageID'],
-        'text0': args[0],
-        'text1': len(args) > 1 and args[1] or '',
-    }
-    result = requests.post(ACTION, data=data)
-    instance_id = result.json()['instanceID']
-    return INSTANCE.format(instance_id)
+def create_meme(title, args, options):
+    INFO_DAT.update({'urlName': title})
+    result, message = get_api_result(INFO_URL, params=INFO_DAT)
+    if result:
+        ACTION_DAT.update({
+            'username': options.username,
+            'password': options.password,
+            'generatorID': result['generatorID'],
+            'imageID': get_image_id_from_url(result['imageUrl']),
+            'text0': args[0],
+            'text1': len(args) > 1 and args[1] or '',
+        })
+    else:
+        return message
+
+    result, message = get_api_result(ACTION_URL, params=ACTION_DAT)
+    if result:
+        return result['instanceImageUrl']
+    else:
+        return message
+
+
+def get_api_result(*args, **kwargs):
+    response = requests.get(*args, **kwargs)
+    result = None
+    message = FIX_MEME
+    try:
+        jsondata = response.json()
+    except ValueError:
+        pass # out is already set for this state
+    else:
+        if jsondata.get('success', False):
+            result = jsondata['result']
+            message = None
+        elif jsondata.get('errorMessage', False):
+            message = jsondata['errorMessage']
+    return result, message
 
 
 def main(options, args):
@@ -153,7 +182,7 @@ def main(options, args):
             title = args.pop(0)
 
         if title:
-            output = create_meme(title, args)
+            output = create_meme(title, args, options)
         else:
             output = "No memes found matching {0}".format(options.search)
     return output
@@ -167,11 +196,12 @@ def parse_args(arglist=None):
                       help='list popular meme characters (up to 24)')
     parser.add_option('-s', '--search', metavar='PATTERN',
                       help='list meme characters matching search pattern'
-                           '(up to 24)')
+                           ' (up to 24)')
     parser.add_option('-u', '--username', help="Your memegenerator username")
     parser.add_option('-p', '--password', help="Your memegenerator password")
     parser.add_option('-v', '--version', action='store_true',
                       help='show version')
+    # TODO: add language code option
     if arglist:
         return parser.parse_args(arglist)
     else:
