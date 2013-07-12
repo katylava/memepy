@@ -1,7 +1,29 @@
 #!/usr/bin/env python
+"""
+    meme -u <username> -p <password> <meme> <line1> <line2>
+or:
+    meme -u <username> -p <password> -s <pattern> <line1> <line2>
 
+In the first form you must provide a valid meme name (which can be determined
+by running `meme -l` or `meme -s <pattern>` with no arguments).
+
+In the second form the script will use the highest scoring character matching
+the search pattern. Since the search API does not return these pre-sorted, the
+actual most popular matching meme may not show up in the results -- so be
+specific.
+
+NOTE: You must have a memegenerator.co user account to **create** a meme!
+(To list popular or search memes you do not need a username and password.)
+"""
+
+import os
 import requests
 from optparse import OptionParser
+
+# try:
+#     import ConfigParser as configparser
+# except ImportError:
+#     import configparser
 
 try:
     from urllib import quote
@@ -9,13 +31,12 @@ except ImportError:
     from urllib.parse import quote
 
 
+# TODO: store u/p in config file
+# CONFIG_PATH = os.path.expanduser(os.path.join('~', '.meme'))
+
 FIX_MEME = "Time to fix meme again. Check https://pypi.python.org/pypi/meme" \
            " for notice that it's being fixed. If no notice, then ping" \
            " me @katylava."
-
-# FOR ALL TO SEE
-USERNAME = 'memepy'
-PASSWORD = 'mghatesme'
 
 GENURL = 'http://version1.api.memegenerator.co'
 
@@ -38,8 +59,8 @@ INFO_DAT = {'urlName': None}
 
 ACTION_URL = "{0}/Instance_Create".format(GENURL)
 ACTION_DAT = {
-    'username': USERNAME,
-    'password': PASSWORD,
+    'username': None,
+    'password': None,
     'languageCode': 'en',
     'generatorID': None,
     'imageID': None,
@@ -139,20 +160,16 @@ def main(options, args):
 
 
 def parse_args(arglist=None):
-    usage = ("usage: %prog <meme> <line1> <line2>\n"
-             "or: %prog -s <pattern> <line1> <line2>\n"
-             "In the first form you must provide a valid meme name (which"
-             " can be determined by running %prog -l or %prog -s <pattern>"
-             " with no arguments).\n"
-             "In the second form the script will use the highest scoring"
-             " character matching the search pattern.")
+    usage = globals()['__doc__']
     parser = OptionParser(usage=usage)
     parser.add_option('-l', '--list', action='store_true',
                       dest='memelist', default=False,
-                      help='list popular meme characters (up to 12)')
-    parser.add_option('-s', '--search', metavar='STRING',
+                      help='list popular meme characters (up to 24)')
+    parser.add_option('-s', '--search', metavar='PATTERN',
                       help='list meme characters matching search pattern'
-                           '(up to 12)')
+                           '(up to 24)')
+    parser.add_option('-u', '--username', help="Your memegenerator username")
+    parser.add_option('-p', '--password', help="Your memegenerator password")
     parser.add_option('-v', '--version', action='store_true',
                       help='show version')
     if arglist:
